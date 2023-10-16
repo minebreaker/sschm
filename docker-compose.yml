@@ -1,0 +1,13 @@
+# This docker compose file is for development rather than deployment.
+# To deploy this app, see #FIXME
+
+version: "2"
+services:
+  db:
+    image: postgres:16
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: changeme
+      POSTGRES_DB: sschm
+    ports:
+      - "8081:5432"
