@@ -1,6 +1,8 @@
 package rip.deadcode.sschm
 
 import cats.effect.unsafe.IORuntime
+import com.github.jknack.handlebars.Handlebars
+import com.github.jknack.handlebars.io.ClassPathTemplateLoader
 import com.google.common.net.MediaType
 import jakarta.servlet.http.{HttpServletRequest, HttpServletResponse}
 import org.eclipse.jetty.server.handler.AbstractHandler
@@ -10,7 +12,7 @@ import org.jdbi.v3.core.Jdbi
 import org.slf4j.LoggerFactory
 import rip.deadcode.sschm.db.{createDataSource, setupFlyway}
 import rip.deadcode.sschm.http.HttpResponse.{BinaryHttpResponse, EmptyHttpResponse, StringHttpResponse}
-import rip.deadcode.sschm.http.handler.{PhotoGetHandler, PhotoPostHandler}
+import rip.deadcode.sschm.http.handler.{CarPostFormHandler, CarPostHandler, PhotoGetHandler, PhotoPostHandler}
 import rip.deadcode.sschm.http.{HelloWorldHandler, HttpResponse, NotFoundHandler}
 
 import scala.util.chaining.scalaUtilChainingOps
@@ -33,7 +35,8 @@ def runServer(): Unit =
 
   val appCtx = AppContextImpl(
     config,
-    Jdbi.create(dataSource)
+    Jdbi.create(dataSource),
+    createHandlebars()
   )
 
   val threadPool = QueuedThreadPool()
@@ -58,7 +61,12 @@ def runServer(): Unit =
         val targetHandler = handlers
           .find(h => baseRequest.getMethod == h.method && h.url.matches(target))
           .getOrElse(NotFoundHandler)
-        val result = targetHandler.handle(baseRequest, appCtx).handleError(handlerUnexpected).unsafeRunSync()
+        val result =
+          try targetHandler.handle(baseRequest, appCtx).handleError(handlerUnexpected).unsafeRunSync()
+          catch
+            case e: Exception =>
+              logger.info("Error outside the IO")
+              handlerUnexpected(e)
 
         response.setStatus(result.status)
         result.header.foreach { case (name, value) =>
@@ -82,6 +90,8 @@ def runServer(): Unit =
 
 private val handlers = Seq(
   HelloWorldHandler,
+  CarPostFormHandler,
+  CarPostHandler,
   PhotoGetHandler,
   PhotoPostHandler
 )
@@ -93,3 +103,7 @@ private def handlerUnexpected(e: Throwable) =
     contentType = MediaType.HTML_UTF_8,
     "<h1>500 Internal Server Error</h1>"
   )
+
+private def createHandlebars(): Handlebars =
+  val loader = ClassPathTemplateLoader("/template", ".hbs")
+  Handlebars(loader)

@@ -22,5 +22,5 @@ TODO
 Following units are used for internal data, and converted to user preferred ones on display
 
 * Distance - int in km
-* Time - zoned datetime if available, utc if not
+* Time - zoned datetime if available, utc if not. User-entered local datetimes are assumed to have configured timezone
 * Fuel - dL

@@ -2,7 +2,7 @@ create table car (
     id         uuid primary key,
     name       text                     not null,
     photo_id   uuid,
-    event_date timestamp with time zone not null,
+    note       text                     not null,
     created_at timestamp with time zone not null,
     updated_at timestamp with time zone not null
 );
@@ -11,6 +11,8 @@ create table event (
     id         uuid primary key,
     car_id     uuid                     not null references car(id),
     odo        int, -- km
+    price      int, -- no currency
+    note       text                     not null,
     event_date timestamp with time zone not null,
     created_at timestamp with time zone not null,
     updated_at timestamp with time zone not null
@@ -27,6 +29,18 @@ create table refuel (
     event_date         timestamp with time zone not null,
     created_at         timestamp with time zone not null,
     updated_at         timestamp with time zone not null
+);
+
+-- Logs for each maintenance
+create table maintenance_event (
+    id         uuid primary key,
+    car_id     uuid                     not null references car(id),
+    odo        int,
+    amount     int, -- what maintenance did you do?
+    price      int, -- no currency
+    event_date timestamp with time zone not null,
+    created_at timestamp with time zone not null,
+    updated_at timestamp with time zone not null
 );
 
 -- Sets of maintenances.

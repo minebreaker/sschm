@@ -19,9 +19,7 @@ object PhotoPostHandler extends HttpHandler:
 
   private val logger = LoggerFactory.getLogger(classOf[PhotoPostHandler.type])
 
-  private val regex = "^/photo/upload$".r
-
-  override def url: Regex = regex
+  override def url: Regex = "^/photo/upload$".r
 
   override def method: String = "POST"
 
