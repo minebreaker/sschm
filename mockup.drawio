@@ -19,43 +19,43 @@
                 <mxCell id="8" value="Menu bar" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="40" y="80" width="280" height="40" as="geometry"/>
                 </mxCell>
-                <mxCell id="9" value="Car History" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+                <mxCell id="9" value="Car History" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
                     <mxGeometry x="360" y="40" width="280" height="40" as="geometry"/>
                 </mxCell>
-                <mxCell id="10" value="Car pict" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="10" value="Car pict" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="360" y="80" width="280" height="120" as="geometry"/>
                 </mxCell>
-                <mxCell id="11" value="Upload pict.&lt;br&gt;Change name" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+                <mxCell id="11" value="Upload pict.&lt;br&gt;Change name" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
                     <mxGeometry x="560" y="200" width="80" height="40" as="geometry"/>
                 </mxCell>
-                <mxCell id="12" value="Audi S8" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+                <mxCell id="12" value="Audi S8" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
                     <mxGeometry x="360" y="200" width="200" height="40" as="geometry"/>
                 </mxCell>
-                <mxCell id="13" value="Config" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+                <mxCell id="13" value="Config" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
                     <mxGeometry x="680" y="40" width="280" height="40" as="geometry"/>
                 </mxCell>
-                <mxCell id="15" value="Unit&lt;br&gt;* km&lt;br&gt;* m&lt;br&gt;&lt;br&gt;Fuel efficiency style&lt;br&gt;* km/L&lt;br&gt;* L/100km&lt;br&gt;&lt;br&gt;Date style&lt;br&gt;* yyyy/mm/dd&lt;br&gt;* dd/mm/yyyy&lt;br&gt;* mm, dd yyyy&lt;br&gt;&lt;br&gt;Setup maitenance cycle presets" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" vertex="1" parent="1">
-                    <mxGeometry x="680" y="80" width="280" height="240" as="geometry"/>
+                <mxCell id="15" value="Unit&lt;br&gt;* km&lt;br&gt;* m&lt;br&gt;&lt;br&gt;Fuel efficiency style&lt;br&gt;* km/L&lt;br&gt;* L/100km&lt;br&gt;&lt;br&gt;Date style&lt;br&gt;* yyyy/mm/dd&lt;br&gt;* dd/mm/yyyy&lt;br&gt;* mm, dd yyyy&lt;br&gt;&lt;br&gt;Timezone&lt;br&gt;[]&lt;br&gt;&lt;br&gt;Setup maitenance cycle presets" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="1" vertex="1">
+                    <mxGeometry x="680" y="80" width="280" height="320" as="geometry"/>
                 </mxCell>
-                <mxCell id="17" value="2000/01/01&lt;br&gt;0km You've added the vehicle" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+                <mxCell id="17" value="2000/01/01&lt;br&gt;0km You've added the vehicle" style="rounded=0;whiteSpace=wrap;html=1;align=left;" parent="1" vertex="1">
                     <mxGeometry x="360" y="520" width="280" height="40" as="geometry"/>
                 </mxCell>
-                <mxCell id="18" value="2000/01/01&lt;br&gt;3000km oil change" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+                <mxCell id="18" value="2000/01/01&lt;br&gt;3000km oil change" style="rounded=0;whiteSpace=wrap;html=1;align=left;" parent="1" vertex="1">
                     <mxGeometry x="360" y="440" width="280" height="40" as="geometry"/>
                 </mxCell>
-                <mxCell id="19" value="(!) Oil change (-1000km) (since 2000/01/01)" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+                <mxCell id="19" value="(!) Oil change (-1000km) (since 2000/01/01)" style="rounded=0;whiteSpace=wrap;html=1;align=left;" parent="1" vertex="1">
                     <mxGeometry x="360" y="360" width="280" height="40" as="geometry"/>
                 </mxCell>
-                <mxCell id="21" value="(!) Oil change (-1000km) (since 2000/01/01)" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+                <mxCell id="21" value="(!) Oil change (-1000km) (since 2000/01/01)" style="rounded=0;whiteSpace=wrap;html=1;align=left;" parent="1" vertex="1">
                     <mxGeometry x="40" y="360" width="280" height="40" as="geometry"/>
                 </mxCell>
-                <mxCell id="22" value="Car pict&lt;br&gt;- repeated par cars -" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="22" value="Car pict&lt;br&gt;- repeated par cars -" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="40" y="440" width="280" height="120" as="geometry"/>
                 </mxCell>
-                <mxCell id="23" value="2000/01/01&lt;br&gt;100km refuel&amp;nbsp;" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+                <mxCell id="23" value="2000/01/01&lt;br&gt;100km refuel&amp;nbsp;" style="rounded=0;whiteSpace=wrap;html=1;align=left;" parent="1" vertex="1">
                     <mxGeometry x="360" y="480" width="280" height="40" as="geometry"/>
                 </mxCell>
-                <mxCell id="24" value="Odo: 2000km&lt;br&gt;FE: 10 km/L&lt;br&gt;(+) Refuel&lt;br&gt;(+) Maitenance&lt;br&gt;(+) Othe notes" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+                <mxCell id="24" value="Odo: 2000km&lt;br&gt;FE: 10 km/L&lt;br&gt;(+) Refuel&lt;br&gt;(+) Maitenance&lt;br&gt;(+) Othe notes" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
                     <mxGeometry x="360" y="240" width="280" height="80" as="geometry"/>
                 </mxCell>
             </root>

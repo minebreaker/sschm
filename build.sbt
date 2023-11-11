@@ -11,6 +11,7 @@ lazy val root = (project in file("."))
       // Core
       "org.eclipse.jetty" % "jetty-server" % "11.0.14",
       "org.apache.velocity" % "velocity-engine-core" % "2.3",
+      "com.github.jknack" % "handlebars" % "4.3.1",
       "com.google.guava" % "guava" % "32.1.3-jre",
       "com.typesafe" % "config" % "1.4.2",
       "ch.qos.logback" % "logback-classic" % "1.4.7",

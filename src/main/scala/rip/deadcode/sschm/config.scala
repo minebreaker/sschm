@@ -12,7 +12,8 @@ case class DatabaseConfig(
     port: Int,
     username: String,
     password: String,
-    database: String
+    database: String,
+    cleanDatabaseOnStartup: Boolean
 )
 
 def readConfig(): Config =
@@ -26,6 +27,7 @@ def readConfig(): Config =
       port = db.getInt("port"),
       username = db.getString("username"),
       password = db.getString("password"),
-      database = db.getString("database")
+      database = db.getString("database"),
+      cleanDatabaseOnStartup = db.getBoolean("dangerouslyCleanDatabaseOnStartup")
     )
   )

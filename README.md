@@ -6,15 +6,21 @@
 
 TODO - screenshots
 
-
 # Usage
 
 TODO
 
-
 # Build
 
-## Reuirements
+## Requirements
 
 * Java 17
 * Docker
+
+### Units of internal data
+
+Following units are used for internal data, and converted to user preferred ones on display
+
+* Distance - int in km
+* Time - zoned datetime if available, utc if not
+* Fuel - dL

@@ -1,12 +1,9 @@
 package rip.deadcode.sschm.db
 
-import cats.effect.{Concurrent, IO, Ref}
 import com.zaxxer.hikari.{HikariConfig, HikariDataSource}
 import org.flywaydb.core.Flyway
-import org.postgresql.ds.{PGConnectionPoolDataSource, PGSimpleDataSource}
-import rip.deadcode.sschm.Config
+import rip.deadcode.sschm.{Config, DatabaseConfig}
 
-import java.net.URI
 import javax.sql.DataSource
 import scala.util.chaining.scalaUtilChainingOps
 
@@ -21,7 +18,13 @@ def createDataSource(config: Config): DataSource =
     .tap(_.setPassword(dbConf.password))
   HikariDataSource(hikariConfig)
 
-def setupFlyway(dataSource: DataSource): Unit =
-  Flyway.configure().dataSource(dataSource)
+def setupFlyway(dataSource: DataSource, config: DatabaseConfig): Unit =
+  val flyway = Flyway
+    .configure()
+    .cleanDisabled(!config.cleanDatabaseOnStartup)
+    .dataSource(dataSource)
     .load()
-    .migrate()
+  if (config.cleanDatabaseOnStartup) {
+    flyway.clean()
+  }
+  flyway.migrate()
