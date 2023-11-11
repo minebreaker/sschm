@@ -9,7 +9,8 @@ import org.eclipse.jetty.util.thread.QueuedThreadPool
 import org.jdbi.v3.core.Jdbi
 import org.slf4j.LoggerFactory
 import rip.deadcode.sschm.db.{createDataSource, setupFlyway}
-import rip.deadcode.sschm.http.HttpResponse.{BinaryHttpResponse, StringHttpResponse}
+import rip.deadcode.sschm.http.HttpResponse.{BinaryHttpResponse, EmptyHttpResponse, StringHttpResponse}
+import rip.deadcode.sschm.http.handler.{PhotoGetHandler, PhotoPostHandler}
 import rip.deadcode.sschm.http.{HelloWorldHandler, HttpResponse, NotFoundHandler}
 
 import scala.util.chaining.scalaUtilChainingOps
@@ -54,29 +55,41 @@ def runServer(): Unit =
         implicit val catsRuntime: IORuntime = IORuntime.global
 
         logger.debug(s"Target url: $target")
-        val targetHandler = handlers.find(_.url().matches(target)).getOrElse(NotFoundHandler)
-        val result = targetHandler.handle(target, appCtx).handleError(handlerUnexpected).unsafeRunSync()
+        val targetHandler = handlers
+          .find(h => baseRequest.getMethod == h.method && h.url.matches(target))
+          .getOrElse(NotFoundHandler)
+        val result = targetHandler.handle(baseRequest, appCtx).handleError(handlerUnexpected).unsafeRunSync()
 
         response.setStatus(result.status)
-        response.setContentType(result.contentType.toString)
+        result.header.foreach { case (name, value) =>
+          response.setHeader(name, value)
+        }
         result match {
-          case StringHttpResponse(_, _, body) =>
+          case StringHttpResponse(_, contentType, body, _) =>
             logger.debug(s"Response: {}", body)
+            response.setContentType(contentType.toString)
             response.getWriter.print(body)
-          case BinaryHttpResponse(_, _, body) =>
+          case BinaryHttpResponse(_, contentType, body, _) =>
             logger.debug("Response: binary")
+            response.setContentType(contentType.toString)
             response.getOutputStream.write(body)
+          case EmptyHttpResponse(_, _) =>
+            logger.debug("Response: empty body")
         }
         baseRequest.setHandled(true)
   )
   server.start()
 
 private val handlers = Seq(
-  HelloWorldHandler
+  HelloWorldHandler,
+  PhotoGetHandler,
+  PhotoPostHandler
 )
 
-private def handlerUnexpected(e: Throwable) = StringHttpResponse(
-  status = 500,
-  contentType = MediaType.HTML_UTF_8,
-  "<h1>500 Internal Server Error</h1>"
-)
+private def handlerUnexpected(e: Throwable) =
+  logger.warn("Unhandled exception", e)
+  StringHttpResponse(
+    status = 500,
+    contentType = MediaType.HTML_UTF_8,
+    "<h1>500 Internal Server Error</h1>"
+  )

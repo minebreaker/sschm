@@ -8,7 +8,11 @@
     </encoder>
   </appender>
 
+  <logger name="rip.deadcode.sschm">
+    <level value="debug"/>
+  </logger>
+
   <root level="info">
-    <appender-ref ref="STDOUT" />
+    <appender-ref ref="STDOUT"/>
   </root>
 </configuration>

@@ -10,7 +10,11 @@ lazy val root = (project in file("."))
     libraryDependencies ++= Seq(
       // Core
       "org.eclipse.jetty" % "jetty-server" % "11.0.14",
-      "org.apache.velocity" % "velocity-engine-core" % "2.3",
+//      "org.apache.commons" % "commons-fileupload2" % "2.0.0-M1", // somehow sbt can't resolve dependencies correctly (maybe it's commons' documentation issue?)
+      "org.apache.commons" % "commons-fileupload2-core" % "2.0.0-M1",
+      "org.apache.commons" % "commons-fileupload2-jakarta" % "2.0.0-M1",
+      "com.github.jknack" % "handlebars" % "4.3.1",
+//      "org.apache.velocity" % "velocity-engine-core" % "2.3",
       "com.github.jknack" % "handlebars" % "4.3.1",
       "com.google.guava" % "guava" % "32.1.3-jre",
       "com.typesafe" % "config" % "1.4.2",

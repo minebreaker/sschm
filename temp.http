@@ -1,0 +1,13 @@
+// @no-redirect
+POST http://localhost:8080/photo/upload
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="file"; filename="input.jpg"
+
+< ./temp.jpg
+
+--boundary
+Content-Disposition: form-data; name="car_id"
+
+test
