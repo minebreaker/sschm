@@ -12,7 +12,7 @@ import scala.util.matching.compat.Regex
 
 object PhotoGetHandler extends HttpHandler:
 
-  private val regex = "^/api/photo/([^/]*)$".r
+  private val regex = "^/api/photo/([^/]+)$".r
 
   override def url: Regex = regex
 
@@ -20,10 +20,9 @@ object PhotoGetHandler extends HttpHandler:
 
   override def handle(request: Request, ctx: AppContext): IO[HttpResponse] =
 
-    val id = regex.findFirstMatchIn(request.getRequestURL) match
-      case Some(m) =>
-        m.group(1)
-      case None => ???
+    val id = regex.findFirstMatchIn(request.getOriginalURI) match
+      case Some(m) => m.group(1)
+      case None    => ???
 
     for photo <- readPhoto(ctx)(id)
     yield BinaryHttpResponse(200, MediaType.parse(photo.contentType), photo.data)

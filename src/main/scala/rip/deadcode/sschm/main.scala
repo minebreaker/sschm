@@ -12,7 +12,13 @@ import org.jdbi.v3.core.Jdbi
 import org.slf4j.LoggerFactory
 import rip.deadcode.sschm.db.{createDataSource, setupFlyway}
 import rip.deadcode.sschm.http.HttpResponse.{BinaryHttpResponse, EmptyHttpResponse, StringHttpResponse}
-import rip.deadcode.sschm.http.handler.{CarPostFormHandler, CarPostHandler, PhotoGetHandler, PhotoPostHandler}
+import rip.deadcode.sschm.http.handler.{
+  CarGetHandler,
+  CarPostFormHandler,
+  CarPostHandler,
+  PhotoGetHandler,
+  PhotoPostHandler
+}
 import rip.deadcode.sschm.http.{HelloWorldHandler, HttpResponse, NotFoundHandler}
 
 import scala.util.chaining.scalaUtilChainingOps
@@ -92,6 +98,7 @@ private val handlers = Seq(
   HelloWorldHandler,
   CarPostFormHandler,
   CarPostHandler,
+  CarGetHandler,
   PhotoGetHandler,
   PhotoPostHandler
 )

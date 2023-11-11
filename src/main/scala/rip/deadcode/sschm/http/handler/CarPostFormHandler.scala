@@ -21,6 +21,6 @@ object CarPostFormHandler extends HttpHandler:
       StringHttpResponse(
         200,
         MediaType.HTML_UTF_8,
-        template.apply(Map.empty)
+        template.apply(java.util.Map.of())
       )
     )

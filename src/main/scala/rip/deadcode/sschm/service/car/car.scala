@@ -2,8 +2,30 @@ package rip.deadcode.sschm.service.car
 
 import cats.effect.IO
 import rip.deadcode.sschm.AppContext
+import rip.deadcode.sschm.service.car.model.Car
 
 import java.time.ZonedDateTime
+
+def readCar(ctx: AppContext)(id: String): IO[Car] =
+  for car <- IO.blocking {
+      ctx.jdbi.withHandle { handle =>
+        handle
+          // language=sql
+          .createQuery("select id, name, photo_id, note, created_at, updated_at from car where id::text = :id")
+          .bind("id", id)
+          .map(r =>
+            Car(
+              r.getColumn("id", classOf[String]),
+              r.getColumn("name", classOf[String]),
+              Option(r.getColumn("photo_id", classOf[String])),
+              r.getColumn("created_at", classOf[ZonedDateTime]),
+              r.getColumn("updated_at", classOf[ZonedDateTime])
+            )
+          )
+          .one()
+      }
+    }
+  yield car
 
 case class WriteCarParams(
     name: String,

@@ -1,0 +1,29 @@
+<html lang="en">
+<head>
+  {{> component/head}}
+  <title>SSCHM - Add a new car</title>
+
+</head>
+
+<body>
+
+<div class="container">
+  <h1>{{name}}</h1>
+
+  <div>
+    {{#photoId}}
+      <img src="/photo/{{photo_id}}" alt="car image">
+    {{/photoId}}
+    {{#note}}
+      <p>
+        {{note}}
+      </p>
+    {{/note}}
+  </div>
+
+
+</div>
+
+</body>
+
+</html>
