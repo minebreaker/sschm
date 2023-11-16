@@ -9,10 +9,8 @@ import rip.deadcode.sschm.http.HttpResponse.EmptyHttpResponse
 import rip.deadcode.sschm.http.{HttpHandler, HttpResponse}
 import rip.deadcode.sschm.service.car.{WriteCarParams, writeCar}
 
-import java.time.{LocalDateTime, ZoneId, ZoneOffset, ZonedDateTime}
 import java.time.format.DateTimeFormatter
-import java.util.TimeZone
-import scala.util.Try
+import java.time.{LocalDateTime, ZoneId}
 import scala.util.matching.compat.Regex
 
 object CarPostHandler extends HttpHandler:

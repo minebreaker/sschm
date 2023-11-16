@@ -1,14 +1,16 @@
 package rip.deadcode.sschm.http.handler
 
 import cats.effect.IO
+import com.github.jknack.handlebars.Context
 import com.google.common.net.MediaType
 import org.eclipse.jetty.server.Request
 import rip.deadcode.sschm.AppContext
 import rip.deadcode.sschm.http.HttpResponse.StringHttpResponse
 import rip.deadcode.sschm.http.{HttpHandler, HttpResponse}
+import rip.deadcode.sschm.lib.handlebars.ScalaValueResolver
+import rip.deadcode.sschm.model.db.{Car, Event}
 import rip.deadcode.sschm.service.car.readCar
 
-import javax.annotation.Nullable
 import scala.jdk.CollectionConverters.*
 import scala.util.matching.compat.Regex
 
@@ -27,20 +29,15 @@ object CarGetHandler extends HttpHandler:
       case None    => ???
 
     for
-      car <- readCar(ctx)(id)
+      result <- readCar(ctx)(id)
       html = template.apply(
-        CarGetTemplate(
-          car.name,
-          car.photoId.orNull
-        )
+        Context
+          .newBuilder(result)
+          .resolver(new ScalaValueResolver)
+          .build()
       )
     yield StringHttpResponse(
       200,
       MediaType.HTML_UTF_8,
       html
     )
-
-  private case class CarGetTemplate(
-      name: String,
-      photoId: String @Nullable
-  )

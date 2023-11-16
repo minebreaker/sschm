@@ -3,7 +3,7 @@ package rip.deadcode.sschm.service.photo
 import cats.effect.IO
 import com.google.common.net.MediaType
 import rip.deadcode.sschm.AppContext
-import rip.deadcode.sschm.service.photo.model.Photo
+import rip.deadcode.sschm.model.db.Photo
 
 def readPhoto(ctx: AppContext)(id: String): IO[Photo] =
   IO.blocking {

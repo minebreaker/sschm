@@ -1,4 +1,4 @@
-package rip.deadcode.sschm.service.photo.model
+package rip.deadcode.sschm.model.db
 
 import cats.effect.{IO, Ref}
 import rip.deadcode.sschm.AppContext

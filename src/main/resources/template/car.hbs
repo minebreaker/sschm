@@ -8,17 +8,17 @@
 <body>
 
 <div class="container">
-  <h1>{{name}}</h1>
+  <h1>{{car.name}}</h1>
 
   <div>
-    {{#photoId}}
-      <img src="/photo/{{photo_id}}" alt="car image">
-    {{/photoId}}
-    {{#note}}
+    {{#car.photoId}}
+      <img src="/photo/{{car.photoId}}" alt="car image">
+    {{/car.photoId}}
+    {{#events}}
       <p>
-        {{note}}
+        {{id}}
       </p>
-    {{/note}}
+    {{/events}}
   </div>
 
 

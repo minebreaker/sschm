@@ -20,7 +20,9 @@ import rip.deadcode.sschm.http.handler.{
   PhotoPostHandler
 }
 import rip.deadcode.sschm.http.{HelloWorldHandler, HttpResponse, NotFoundHandler}
+import rip.deadcode.sschm.lib.jdbi.{ConstructorRowMapperFactoryDelegator, OptionColumnMapperFactory}
 
+import javax.sql.DataSource
 import scala.util.chaining.scalaUtilChainingOps
 
 @main
@@ -41,7 +43,7 @@ def runServer(): Unit =
 
   val appCtx = AppContextImpl(
     config,
-    Jdbi.create(dataSource),
+    createJdbi(dataSource),
     createHandlebars()
   )
 
@@ -80,7 +82,7 @@ def runServer(): Unit =
         }
         result match {
           case StringHttpResponse(_, contentType, body, _) =>
-            logger.debug(s"Response: {}", body)
+            logger.debug(s"Response: string")
             response.setContentType(contentType.toString)
             response.getWriter.print(body)
           case BinaryHttpResponse(_, contentType, body, _) =>
@@ -110,6 +112,12 @@ private def handlerUnexpected(e: Throwable) =
     contentType = MediaType.HTML_UTF_8,
     "<h1>500 Internal Server Error</h1>"
   )
+
+private def createJdbi(dataSource: DataSource): Jdbi =
+  Jdbi
+    .create(dataSource)
+    .registerRowMapper(new ConstructorRowMapperFactoryDelegator())
+    .registerColumnMapper(new OptionColumnMapperFactory())
 
 private def createHandlebars(): Handlebars =
   val loader = ClassPathTemplateLoader("/template", ".hbs")
