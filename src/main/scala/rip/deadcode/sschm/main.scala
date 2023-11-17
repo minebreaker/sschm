@@ -13,14 +13,7 @@ import org.jdbi.v3.core.Jdbi
 import org.slf4j.LoggerFactory
 import rip.deadcode.sschm.db.{createDataSource, setupFlyway}
 import rip.deadcode.sschm.http.HttpResponse.{BinaryHttpResponse, EmptyHttpResponse, StringHttpResponse}
-import rip.deadcode.sschm.http.handler.{
-  CarGetHandler,
-  CarPostFormHandler,
-  CarPostHandler,
-  PhotoGetHandler,
-  PhotoPostHandler,
-  ResourceHandler
-}
+import rip.deadcode.sschm.http.handler.{CarGetHandler, CarPostFormHandler, CarPostHandler, PhotoGetHandler, PhotoPostHandler, RefuelPostFormHandler, RefuelPostHandler, ResourceHandler}
 import rip.deadcode.sschm.http.{HelloWorldHandler, HttpResponse, NotFoundHandler}
 import rip.deadcode.sschm.lib.jdbi.{ConstructorRowMapperFactoryDelegator, OptionColumnMapperFactory}
 
@@ -104,6 +97,8 @@ private val handlers = Seq(
   CarPostFormHandler,
   CarPostHandler,
   CarGetHandler,
+  RefuelPostFormHandler,
+  RefuelPostHandler,
   PhotoGetHandler,
   PhotoPostHandler
 )

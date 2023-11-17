@@ -17,7 +17,7 @@ object CarPostFormHandler extends HttpHandler:
   override def method: String = "GET"
 
   override def handle(request: Request, ctx: AppContext): IO[HttpResponse] =
-    val template = ctx.handlebars.compile("car_post") // TODO: share template instance
+    val template = ctx.handlebars.compile("car_post_form") // TODO: share template instance
     IO.pure(
       StringHttpResponse(
         200,

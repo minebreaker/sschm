@@ -1,44 +1,38 @@
 {{#> component/panel}}
   {{#*inline "children"}}
-    {{#with ..}}
-
-      {{#eq type "event"}}
-        <h4>Event</h4>
+    {{#eq type "event"}}
+      <h5>Event</h5>
+      <p>{{eventDate}}</p>
+      {{#note}}
+        <p>{{note}}</p>
+      {{/note}}
+    {{else}}
+      {{#eq type "maintenance"}}
+        <h5>Maintenance</h5>
         <p>{{eventDate}}</p>
+        <p>
+          Odo: {{odo}}<br />
+          Price: {{price}}
+        </p>
         {{#note}}
           <p>{{note}}</p>
         {{/note}}
       {{else}}
-        {{#eq type "maintenance"}}
-          <h4>Maintenance</h4>
+        {{#eq type "refuel"}}
+          <h5>Refuel</h5>
           <p>{{eventDate}}</p>
           <p>
-            Odo: {{odd}}<br/>
+            Odo: {{odo}}<br />
             Price: {{price}}
           </p>
           {{#note}}
             <p>{{note}}</p>
           {{/note}}
         {{else}}
-          {{#eq type "refuel"}}
-            <h4>Refuel</h4>
-            <p>{{eventDate}}</p>
-            <p>
-              Odo: {{odd}}<br/>
-              Price: {{price}}
-            </p>
-            {{#note}}
-              <p>{{note}}</p>
-            {{/note}}
-          {{else}}
-          {{! no matching type found }}
-            <h4>Error: unknown event type: {{type}}</h4>
-          {{/eq}}
+        {{! no matching type found }}
+          <h4>Error: unknown event type: {{type}}</h4>
         {{/eq}}
       {{/eq}}
-
-<!--      <p>Event</p>-->
-<!--      <p>{{id}}</p>-->
-    {{/with}}
+    {{/eq}}
   {{/inline}}
 {{/component/panel}}

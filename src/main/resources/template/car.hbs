@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   {{> component/head}}
-  <title>SSCHM - Add a new car</title>
+  <title>SSCHM - {{car.name}}</title>
 
 </head>
 
@@ -21,6 +21,10 @@
     {{car.odo}}<br />
     {{efficiency.efficiency}}
   </p>
+
+  <div>
+    <a href="/car/{{car.id}}/refuel/new" class="button">Refuel</a>
+  </div>
 
   <hr />
 

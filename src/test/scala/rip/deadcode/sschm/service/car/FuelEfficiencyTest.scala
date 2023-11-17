@@ -63,10 +63,10 @@ class FuelEfficiencyTest extends AnyFunSpec:
 
 object FuelEfficiencyTest:
   private val dummyDate = ZonedDateTime.parse("2000-10-10T00:00:00+00:00")
-  private def refuel(odd: Int, price: Int, amount: Int, noPreviousRefuel: Boolean = false): Refuel = Refuel(
+  private def refuel(odo: Int, price: Int, amount: Int, noPreviousRefuel: Boolean = false): Refuel = Refuel(
     "dummy",
     "dummy",
-    Some(odd),
+    Some(odo),
     Some(price),
     "",
     Some(amount),
@@ -77,14 +77,14 @@ object FuelEfficiencyTest:
   )
 
   private def refuel(
-      odd: Option[Int],
+      odo: Option[Int],
       price: Option[Int],
       amount: Option[Int],
       noPreviousRefuel: Boolean
   ): Refuel = Refuel(
     "dummy",
     "dummy",
-    odd,
+    odo,
     price,
     "",
     amount,

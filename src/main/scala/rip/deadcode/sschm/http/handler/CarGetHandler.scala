@@ -10,7 +10,7 @@ import rip.deadcode.sschm.http.HttpResponse.StringHttpResponse
 import rip.deadcode.sschm.http.{HttpHandler, HttpResponse}
 import rip.deadcode.sschm.lib.handlebars.{TemplateContext, render}
 import rip.deadcode.sschm.model.db.{Car, Event, EventImpl, MaintenanceEvent, Refuel}
-import rip.deadcode.sschm.service.car.{CalcFuelEfficiencyResult, readCar}
+import rip.deadcode.sschm.service.car.{CalcFuelEfficiencyResult, readCarAndEvents}
 
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -56,12 +56,12 @@ object CarGetHandler extends HttpHandler:
       )
 
     for
-      result <- readCar(ctx)(id)
+      result <- readCarAndEvents(ctx)(id)
       templateContext = {
         implicit val carTransformer: Transformer[Car, CarTemplate] = car =>
           car
             .into[CarTemplate]
-            .withFieldConst(_.odo, result.events.flatMap(_.odo).lastOption.fold("- km")(odo => s"$odo km"))
+            .withFieldConst(_.odo, result.events.flatMap(_.odo).headOption.fold("- km")(odo => s"$odo km"))
             .transform
         result.into[PageCtx].transform
       }

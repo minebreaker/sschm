@@ -7,13 +7,26 @@ import rip.deadcode.sschm.model.db.{Car, Event, EventImpl, MaintenanceEvent, Ref
 import java.time.ZonedDateTime
 import scala.jdk.CollectionConverters.*
 
+def readCar(ctx: AppContext)(carId: String): IO[Car] =
+  for result <- IO.blocking {
+      ctx.jdbi.withHandle { handle =>
+        handle
+          // language=sql
+          .createQuery("select id, name, photo_id, note, created_at, updated_at from car where id::text = :id")
+          .bind("id", carId)
+          .mapTo(classOf[Car])
+          .one()
+      }
+    }
+  yield result
+
 case class ReadCarResult(
     car: Car,
     events: Seq[Event],
     efficiency: CalcFuelEfficiencyResult
 )
 
-def readCar(ctx: AppContext)(carId: String): IO[ReadCarResult] =
+def readCarAndEvents(ctx: AppContext)(carId: String): IO[ReadCarResult] =
   for
     result <- IO.blocking {
       ctx.jdbi.withHandle { handle =>
