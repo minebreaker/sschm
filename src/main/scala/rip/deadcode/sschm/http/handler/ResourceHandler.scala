@@ -7,6 +7,7 @@ import org.eclipse.jetty.server.Request
 import rip.deadcode.sschm.AppContext
 import rip.deadcode.sschm.http.HttpResponse.StringHttpResponse
 import rip.deadcode.sschm.http.{HttpHandler, HttpResponse}
+import rip.deadcode.sschm.lib.handlebars.render
 
 import scala.util.matching.compat.Regex
 
@@ -18,18 +19,16 @@ object ResourceHandler extends HttpHandler:
 
   override def handle(request: Request, ctx: AppContext): IO[HttpResponse] =
 
-    import scala.jdk.CollectionConverters.*
-
-    val (template, contentType, properties): (Template, MediaType, java.util.Map[String, String]) =
+    val (template, contentType, properties): (Template, MediaType, Map[String, String]) =
       request.getOriginalURI match
         case "/style.css" =>
           (
             ctx.handlebars.compile("style.css"),
             MediaType.CSS_UTF_8,
-            Map("defaultFontSize" -> "14px").asJava // TODO
+            Map("defaultFontSize" -> "14px") // TODO
           )
         case _ => throw Error("unreachable")
 
     IO {
-      StringHttpResponse(200, contentType, template.apply(properties))
+      StringHttpResponse(200, contentType, template.render(properties))
     }

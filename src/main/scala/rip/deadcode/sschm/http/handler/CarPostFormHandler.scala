@@ -6,6 +6,7 @@ import org.eclipse.jetty.server.Request
 import rip.deadcode.sschm.AppContext
 import rip.deadcode.sschm.http.HttpResponse.StringHttpResponse
 import rip.deadcode.sschm.http.{HttpHandler, HttpResponse}
+import rip.deadcode.sschm.lib.handlebars.render
 
 import scala.util.matching.compat.Regex
 
@@ -21,6 +22,6 @@ object CarPostFormHandler extends HttpHandler:
       StringHttpResponse(
         200,
         MediaType.HTML_UTF_8,
-        template.apply(java.util.Map.of())
+        template.render(Map.empty)
       )
     )

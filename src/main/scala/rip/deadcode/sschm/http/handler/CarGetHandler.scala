@@ -1,7 +1,6 @@
 package rip.deadcode.sschm.http.handler
 
 import cats.effect.IO
-import com.github.jknack.handlebars.Context
 import com.google.common.net.MediaType
 import io.scalaland.chimney.Transformer
 import io.scalaland.chimney.dsl.*
@@ -9,7 +8,7 @@ import org.eclipse.jetty.server.Request
 import rip.deadcode.sschm.AppContext
 import rip.deadcode.sschm.http.HttpResponse.StringHttpResponse
 import rip.deadcode.sschm.http.{HttpHandler, HttpResponse}
-import rip.deadcode.sschm.lib.handlebars.ScalaValueResolver
+import rip.deadcode.sschm.lib.handlebars.{TemplateContext, render}
 import rip.deadcode.sschm.model.db.{Event, EventImpl, MaintenanceEvent, Refuel}
 import rip.deadcode.sschm.service.car.readCar
 
@@ -50,23 +49,18 @@ object CarGetHandler extends HttpHandler:
 
     for
       result <- readCar(ctx)(id)
-      templateContext = result.into[TemplateContext].transform
-      html = template.apply(
-        Context
-          .newBuilder(templateContext)
-          .resolver(new ScalaValueResolver)
-          .build()
-      )
+      templateContext = result.into[PageCtx].transform
+      html = template.render(templateContext)
     yield StringHttpResponse(
       200,
       MediaType.HTML_UTF_8,
       html
     )
 
-  private case class TemplateContext(
+  private case class PageCtx(
       car: CarTemplate,
       events: Seq[EventTemplate]
-  )
+  ) extends TemplateContext
 
   private case class CarTemplate(
       id: String,
