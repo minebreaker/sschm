@@ -10,6 +10,19 @@
 
 <div class="container">
   <h1>{{car.name}}</h1>
+  {{#car.note}}
+    {{#> component/panel}}
+      {{#*inline "children"}}
+        <p>{{car.note}}</p>
+      {{/inline}}
+    {{/component/panel}}
+  {{/car.note}}
+  <p>
+    {{car.odo}}<br />
+    {{efficiency.efficiency}}
+  </p>
+
+  <hr />
 
   <div>
     {{#car.photoId}}
