@@ -1,4 +1,9 @@
 {{#> component/panel}}
+  {{#*inline "class"}}
+    {{#eq type "event"}}panel-event{{/eq}}
+    {{#eq type "maintenance"}}panel-maintenance{{/eq}}
+    {{#eq type "refuel"}}panel-refuel{{/eq}}
+  {{/inline}}
   {{#*inline "children"}}
     {{#eq type "event"}}
       <h5>Event</h5>
