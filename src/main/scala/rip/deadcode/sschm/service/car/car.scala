@@ -36,10 +36,12 @@ def readCar(ctx: AppContext)(carId: String): IO[ReadCarResult] =
 
         val refuels = handle
           // language=sql
-          .createQuery("""select id, car_id, odo, price, note, amount, no_previous_refuel, event_date, created_at, updated_at
+          .createQuery(
+            """select id, car_id, odo, price, note, amount, no_previous_refuel, event_date, created_at, updated_at
                          |from refuel
                          |where car_id::text = :car_id
-                         |""".stripMargin)
+                         |""".stripMargin
+          )
           .bind("car_id", carId)
           .mapTo(classOf[Refuel])
           .list()
@@ -95,7 +97,7 @@ def writeCar(ctx: AppContext)(params: WriteCarParams): IO[WriteCarResult] =
         handle
           // language=sql
           .createUpdate("""insert into event(id, car_id, odo, price, note, event_date, created_at, updated_at)
-                          |values (:event_id, :car_id, :odo, :price, '', :event_date, current_timestamp, current_timestamp)
+                          |values (:event_id, :car_id, :odo, :price, 'A new car has been registered.', :event_date, current_timestamp, current_timestamp)
                           |""".stripMargin)
           .bind("event_id", eventId)
           .bind("car_id", carId)

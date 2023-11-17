@@ -2,6 +2,7 @@ package rip.deadcode.sschm
 
 import cats.effect.unsafe.IORuntime
 import com.github.jknack.handlebars.Handlebars
+import com.github.jknack.handlebars.helper.ConditionalHelpers
 import com.github.jknack.handlebars.io.ClassPathTemplateLoader
 import com.google.common.net.MediaType
 import jakarta.servlet.http.{HttpServletRequest, HttpServletResponse}
@@ -17,7 +18,8 @@ import rip.deadcode.sschm.http.handler.{
   CarPostFormHandler,
   CarPostHandler,
   PhotoGetHandler,
-  PhotoPostHandler
+  PhotoPostHandler,
+  ResourceHandler
 }
 import rip.deadcode.sschm.http.{HelloWorldHandler, HttpResponse, NotFoundHandler}
 import rip.deadcode.sschm.lib.jdbi.{ConstructorRowMapperFactoryDelegator, OptionColumnMapperFactory}
@@ -98,6 +100,7 @@ def runServer(): Unit =
 
 private val handlers = Seq(
   HelloWorldHandler,
+  ResourceHandler,
   CarPostFormHandler,
   CarPostHandler,
   CarGetHandler,
@@ -121,4 +124,4 @@ private def createJdbi(dataSource: DataSource): Jdbi =
 
 private def createHandlebars(): Handlebars =
   val loader = ClassPathTemplateLoader("/template", ".hbs")
-  Handlebars(loader)
+  Handlebars(loader).registerHelper("eq", ConditionalHelpers.eq)
