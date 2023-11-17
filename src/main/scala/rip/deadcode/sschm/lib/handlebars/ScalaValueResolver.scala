@@ -11,8 +11,6 @@ class ScalaValueResolver extends ValueResolver:
 
   private val delegate = MethodValueResolver.INSTANCE
 
-  import scala.jdk.CollectionConverters.*
-
   override def resolve(context: Any, name: String): Any =
     val result = delegate.resolve(context, name)
     convertScalaValues(result)
