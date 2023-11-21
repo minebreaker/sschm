@@ -1,5 +1,5 @@
 # This docker compose file is for development rather than deployment.
-# To deploy this app, see #FIXME
+# To deploy this app, see README.md#Usage
 
 version: "2"
 services:

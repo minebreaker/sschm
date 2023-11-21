@@ -6,15 +6,22 @@
 
 TODO - screenshots
 
+
 # Usage
 
-TODO
+```bash
+cd deploy
+docker compose -p sschm up -d
+```
+
+Then access to `localhost:8080`
+
 
 # Build
 
 ## Requirements
 
-* Java 17
+* Java 21
 * Docker
 
 ### Units of internal data

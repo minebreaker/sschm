@@ -1,0 +1,19 @@
+version: "2"
+services:
+  sschm-server:
+    image: sschm:0.1.0-SNAPSHOT
+#    restart: unless-stopped
+    restart: "no"
+    environment:
+      SSCHM_DATABASE_HOST: "sschm-db"
+      SSCHM_DATABASE_PORT: "5432"
+    ports:
+      - "8080:8080"  # host:container
+  sschm-db:
+    image: postgres:16
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: changeme
+      POSTGRES_DB: sschm
+#    ports:
+#      - "8081:5432"

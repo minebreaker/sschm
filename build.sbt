@@ -1,4 +1,7 @@
 lazy val root = (project in file("."))
+  .enablePlugins(JavaAppPackaging)
+  .enablePlugins(DockerPlugin)
+  .enablePlugins(AshScriptPlugin)
   .settings(
     name := "sschm",
     organization := "rip.deadcode",
@@ -33,7 +36,10 @@ lazy val root = (project in file("."))
     ).map(_ % "test"),
     Test / testOptions += Tests.Argument(TestFrameworks.ScalaTest),
     Test / fork := true,
-    Test / testForkedParallel := true
-//    dockerBaseImage :=
-//    packageName := "",
+    Test / testForkedParallel := true,
+
+    // Docker
+    dockerBaseImage := "amazoncorretto:21-alpine3.18",
+    Docker / packageName := "sschm",
+    Docker / dockerExposedPorts := Seq(8080),
   )
