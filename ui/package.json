@@ -1,0 +1,37 @@
+{
+  "name": "sschm-ui",
+  "version": "0.1.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm run compile && npm run bundle && npm run copy && npm run copyToServer",
+    "build:clean": "npm run clean && npm run build",
+    "compile": "tsc",
+    "compile:watch": "tsc -w",
+    "bundle": "esbuild ./out/js/index.jsx --bundle --minify --sourcemap --outfile=./out/index.js",
+    "bundle:watch": "esbuild ./out/js/index.jsx --bundle --minify --sourcemap --outfile=./out/index.js --watch",
+    "copy": "npm run copy:html && npm run copy:style",
+    "copy:html": "cpx ./src/index.html ./out/",
+    "copy:style": "cpx ./src/index.css ./out/",
+    "copyToServer": "cpx ./out/* ../server/src/main/resources/ui",
+    "clean": "rimraf ./out",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "GPL-3.0-or-later",
+  "description": "",
+  "dependencies": {
+    "jss": "^10.10.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-jss": "^10.10.0",
+    "router5": "^8.0.1"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.8",
+    "@types/react-dom": "^19.0.3",
+    "cpx": "^1.5.0",
+    "esbuild": "^0.24.2",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.7.3"
+  }
+}

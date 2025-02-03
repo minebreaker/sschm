@@ -10,17 +10,8 @@ import org.jdbi.v3.core.Jdbi
 import org.slf4j.LoggerFactory
 import rip.deadcode.sschm.db.{createDataSource, setupFlyway}
 import rip.deadcode.sschm.http.HttpResponse.{BinaryHttpResponse, EmptyHttpResponse, StringHttpResponse}
-import rip.deadcode.sschm.http.handler.{
-  CarGetHandler,
-  CarPostFormHandler,
-  CarPostHandler,
-  PhotoGetHandler,
-  PhotoPostHandler,
-  RefuelPostFormHandler,
-  RefuelPostHandler,
-  ResourceHandler
-}
-import rip.deadcode.sschm.http.{HelloWorldHandler, HttpResponse, NotFoundHandler}
+import rip.deadcode.sschm.http.handler.{CarGetHandler, CarPostFormHandler, CarPostHandler, HealthHandler, PhotoGetHandler, PhotoPostHandler, RefuelPostFormHandler, RefuelPostHandler, ResourceHandler}
+import rip.deadcode.sschm.http.{HttpResponse, NotFoundHandler}
 import rip.deadcode.sschm.lib.jdbi.{ConstructorRowMapperFactoryDelegator, OptionColumnMapperFactory}
 
 import javax.sql.DataSource
@@ -98,7 +89,7 @@ def runServer(): Unit =
   server.start()
 
 private val handlers = Seq(
-  HelloWorldHandler,
+  HealthHandler,
   ResourceHandler,
   CarPostFormHandler,
   CarPostHandler,
