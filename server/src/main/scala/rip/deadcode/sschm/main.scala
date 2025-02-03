@@ -1,9 +1,6 @@
 package rip.deadcode.sschm
 
 import cats.effect.unsafe.IORuntime
-import com.github.jknack.handlebars.Handlebars
-import com.github.jknack.handlebars.helper.ConditionalHelpers
-import com.github.jknack.handlebars.io.ClassPathTemplateLoader
 import com.google.common.net.MediaType
 import jakarta.servlet.http.{HttpServletRequest, HttpServletResponse}
 import org.eclipse.jetty.server.handler.AbstractHandler
@@ -48,8 +45,7 @@ def runServer(): Unit =
 
   val appCtx = AppContextImpl(
     config,
-    createJdbi(dataSource),
-    createHandlebars()
+    createJdbi(dataSource)
   )
 
   val threadPool = QueuedThreadPool()
@@ -126,7 +122,3 @@ private def createJdbi(dataSource: DataSource): Jdbi =
     .create(dataSource)
     .registerRowMapper(new ConstructorRowMapperFactoryDelegator())
     .registerColumnMapper(new OptionColumnMapperFactory())
-
-private def createHandlebars(): Handlebars =
-  val loader = ClassPathTemplateLoader("/template", ".hbs")
-  Handlebars(loader).registerHelper("eq", ConditionalHelpers.eq)

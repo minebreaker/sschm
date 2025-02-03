@@ -15,13 +15,13 @@ import scala.jdk.OptionConverters.*
 // Basically same as https://jdbi.org/#_columnmapperfactory
 class OptionColumnMapperFactory extends ColumnMapperFactory:
 
-  override def build(t: Type, config: ConfigRegistry): Optional[ColumnMapper[_]] =
+  override def build(t: Type, config: ConfigRegistry): Optional[ColumnMapper[?]] =
 
-    if (classOf[Option[_]] != GenericTypes.getErasedType(t)) {
+    if (classOf[Option[?]] != GenericTypes.getErasedType(t)) {
       return Optional.empty()
     }
 
-    val typeParameterType = GenericTypes.resolveType(classOf[Option[_]].getTypeParameters.apply(0), t)
+    val typeParameterType = GenericTypes.resolveType(classOf[Option[?]].getTypeParameters.apply(0), t)
 
     // AnyVals are passed as java.lang.Object, so there's no way to determine the parameter types.
     // We assume it as Int for a workaround (since we don't use any other types), but should definitely be fixed.
@@ -36,9 +36,9 @@ class OptionColumnMapperFactory extends ColumnMapperFactory:
 
 object OptionColumnMapperFactory:
 
-  private def createOptionMapper(t: Type, typeParameterType: Type, config: ConfigRegistry): ColumnMapper[Option[_]] =
-    new ColumnMapper[Option[_]]:
-      override def map(r: ResultSet, columnNumber: Int, ctx: StatementContext): Option[_] =
+  private def createOptionMapper(t: Type, typeParameterType: Type, config: ConfigRegistry): ColumnMapper[Option[?]] =
+    new ColumnMapper[Option[?]]:
+      override def map(r: ResultSet, columnNumber: Int, ctx: StatementContext): Option[?] =
         val innerMapper = config
           .get(classOf[ColumnMappers])
           .findFor(typeParameterType)
@@ -51,9 +51,9 @@ object OptionColumnMapperFactory:
           }
         Option(innerMapper.map(r, columnNumber, ctx))
 
-  private def createOptionMapperForObject(config: ConfigRegistry): ColumnMapper[Option[_]] =
-    new ColumnMapper[Option[_]]:
-      override def map(r: ResultSet, columnNumber: Int, ctx: StatementContext): Option[_] =
+  private def createOptionMapperForObject(config: ConfigRegistry): ColumnMapper[Option[?]] =
+    new ColumnMapper[Option[?]]:
+      override def map(r: ResultSet, columnNumber: Int, ctx: StatementContext): Option[?] =
         val innerMapper = config
           .get(classOf[ColumnMappers])
           .findFor(classOf[java.lang.Integer])

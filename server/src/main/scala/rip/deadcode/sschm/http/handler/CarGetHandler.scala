@@ -8,7 +8,6 @@ import org.eclipse.jetty.server.Request
 import rip.deadcode.sschm.AppContext
 import rip.deadcode.sschm.http.HttpResponse.StringHttpResponse
 import rip.deadcode.sschm.http.{HttpHandler, HttpResponse}
-import rip.deadcode.sschm.lib.handlebars.{TemplateContext, render}
 import rip.deadcode.sschm.model.db.{Car, Event, EventImpl, MaintenanceEvent, Refuel}
 import rip.deadcode.sschm.service.car.{CalcFuelEfficiencyResult, readCarAndEvents}
 
@@ -23,8 +22,6 @@ object CarGetHandler extends HttpHandler:
   override def method: String = "GET"
 
   override def handle(request: Request, ctx: AppContext): IO[HttpResponse] =
-
-    val template = ctx.handlebars.compile("car")
 
     val id = url.findFirstMatchIn(request.getOriginalURI) match
       case Some(m) => m.group(1)
@@ -55,28 +52,21 @@ object CarGetHandler extends HttpHandler:
         }
       )
 
-    for
-      result <- readCarAndEvents(ctx)(id)
-      templateContext = {
-        implicit val carTransformer: Transformer[Car, CarTemplate] = car =>
-          car
-            .into[CarTemplate]
-            .withFieldConst(_.odo, result.events.flatMap(_.odo).headOption.fold("- km")(odo => s"$odo km"))
-            .transform
-        result.into[PageCtx].transform
-      }
-      html = template.render(templateContext)
+    for result <- readCarAndEvents(ctx)(id)
+//      templateContext = {
+//        implicit val carTransformer: Transformer[Car, CarTemplate] = car =>
+//          car
+//            .into[CarTemplate]
+//            .withFieldConst(_.odo, result.events.flatMap(_.odo).headOption.fold("- km")(odo => s"$odo km"))
+//            .transform
+//        result.into[PageCtx].transform
+//      }
+//      html = template.render(templateContext)
     yield StringHttpResponse(
       200,
       MediaType.HTML_UTF_8,
-      html
+      ???
     )
-
-  private case class PageCtx(
-      car: CarTemplate,
-      events: Seq[EventTemplate],
-      efficiency: EfficiencyTemplate
-  ) extends TemplateContext
 
   private case class CarTemplate(
       id: String,

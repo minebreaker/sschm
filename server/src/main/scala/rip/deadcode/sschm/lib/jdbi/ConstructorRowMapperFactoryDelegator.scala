@@ -10,13 +10,13 @@ import java.util.Optional
 // This factory automatically creates ConstructorMapper for internal classes
 // so that we don't need to register each type.
 class ConstructorRowMapperFactoryDelegator extends RowMapperFactory:
-  override def build(t: Type, config: ConfigRegistry): Optional[RowMapper[_]] =
+  override def build(t: Type, config: ConfigRegistry): Optional[RowMapper[?]] =
     t match
-      case _ if !t.getTypeName.startsWith("rip.deadcode.ssch") =>
+      case _ if !t.getTypeName.startsWith("rip.deadcode.sschm") =>
         Optional.empty()
       case clz: Class[_] =>
         Optional.of(
-          ConstructorMapper.of(clz): RowMapper[_]
+          ConstructorMapper.of(clz): RowMapper[?]
         )
       case _ =>
         Optional.empty()

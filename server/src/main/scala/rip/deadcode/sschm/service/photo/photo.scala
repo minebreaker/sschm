@@ -37,8 +37,7 @@ def writePhoto(ctx: AppContext)(params: WritePhotoParams): IO[Unit] =
 
         handle
           // language=sql
-          .createUpdate(
-            """update car set
+          .createUpdate("""update car set
               |  photo_id = :photo_id,
               |  updated_at = current_timestamp
               |where
