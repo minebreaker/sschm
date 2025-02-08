@@ -12,7 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const router = createRouter(Routes)
   router.usePlugin(browserPlugin())
-  router.start("/")
+  const url = new URL(location.href)
+  router.start(url.pathname)
 
   const root = createRoot(document.getElementById("app")!!)
   root.render(

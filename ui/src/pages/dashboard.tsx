@@ -2,6 +2,7 @@ import { useFetch, UseFetchState } from "../lib/net"
 import { LoadingPage } from "../components/loading"
 import { Link } from "react-router5"
 import { Route } from "router5"
+import { CarListResponse } from "../types/api/car"
 
 export function Dashboard() {
 

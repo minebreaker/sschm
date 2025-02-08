@@ -1,14 +1,32 @@
-type CarGetResponse = {
+export type CarGetResponse = {
   id: string
   name: string,
   photoId?: string,
-  note?: string,
-  odo?: number,
-  efficiency?: number,
-  events: any[] // FIXME
+  note: string,
+  odo: string,
+  efficiency: string,
+  events: CarGetResponseEvent[]
 }
 
-type CarListResponse = {
+export const CarGetResponseEventType = {
+  Event: "event",
+  Maintenance: "maintenance",
+  Refuel: "refuel"
+}
+
+export type CarGetResponseEventType = typeof CarGetResponseEventType[keyof typeof CarGetResponseEventType]
+
+export type CarGetResponseEvent = {
+  id: string
+  type: CarGetResponseEventType,
+  carId: string,
+  odo: string,
+  price: string,
+  note: string,
+  eventDate: string
+}
+
+export type CarListResponse = {
   items: {
     id: string
     name: string,
@@ -18,7 +36,7 @@ type CarListResponse = {
 }
 
 
-type CarPostRequest = {
+export type CarPostRequest = {
   name: string,
   odo?: number,
   price?: number
@@ -26,7 +44,7 @@ type CarPostRequest = {
   note?: string,
 }
 
-type CarPostResponse = {
+export type CarPostResponse = {
   id: string
   name: string,
   photoId?: string,

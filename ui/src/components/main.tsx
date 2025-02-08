@@ -4,10 +4,21 @@ import { Car, CarRoute } from "../pages/car"
 import { AddCar, AddCarRoute } from "../pages/addCar"
 import { RouteNames } from "../lib/routing"
 import { Refuel, RefuelRoute } from "../pages/refuel"
+import { createUseStyles } from "react-jss"
+
+
+const useStyles = createUseStyles({
+  main: {
+    padding: "2rem"
+  }
+})
 
 export function Main() {
+
+  const classes = useStyles()
+
   return (
-    <main>
+    <main className={classes.main}>
       <Routing />
     </main>
   )
