@@ -26,6 +26,22 @@ case class ReadCarResult(
     efficiency: CalcFuelEfficiencyResult
 )
 
+def listCars(ctx: AppContext): IO[Seq[Car]] =
+  import scala.jdk.CollectionConverters._
+  for {
+    result <- IO.blocking {
+      ctx.jdbi.withHandle { handle =>
+        handle
+          // language=sql
+          .createQuery("select id, name, photo_id, note, created_at, updated_at from car")
+          .mapTo(classOf[Car])
+          .list()
+          .asScala
+          .toSeq
+      }
+    }
+  } yield result
+
 def readCarAndEvents(ctx: AppContext)(carId: String): IO[ReadCarResult] =
   for
     result <- IO.blocking {

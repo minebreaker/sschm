@@ -15,7 +15,7 @@
     "module": "esnext",
     "moduleResolution": "node",
     "isolatedModules": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "noUnusedLocals": true,
     "incremental": true
   },

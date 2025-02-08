@@ -9,8 +9,9 @@ import org.eclipse.jetty.util.thread.QueuedThreadPool
 import org.jdbi.v3.core.Jdbi
 import org.slf4j.LoggerFactory
 import rip.deadcode.sschm.db.{createDataSource, setupFlyway}
-import rip.deadcode.sschm.http.HttpResponse.{BinaryHttpResponse, EmptyHttpResponse, StringHttpResponse}
-import rip.deadcode.sschm.http.handler.{CarGetHandler, CarPostFormHandler, CarPostHandler, HealthHandler, PhotoGetHandler, PhotoPostHandler, RefuelPostFormHandler, RefuelPostHandler, ResourceHandler}
+import rip.deadcode.sschm.http.HttpResponse.{BinaryHttpResponse, EmptyHttpResponse, JsonResponse, StringHttpResponse}
+import rip.deadcode.sschm.http.handler.api.{CarGetHandler, CarListHandler, CarPostHandler}
+import rip.deadcode.sschm.http.handler.{HealthHandler, ResourceHandler}
 import rip.deadcode.sschm.http.{HttpResponse, NotFoundHandler}
 import rip.deadcode.sschm.lib.jdbi.{ConstructorRowMapperFactoryDelegator, OptionColumnMapperFactory}
 
@@ -77,6 +78,10 @@ def runServer(): Unit =
             logger.debug(s"Response: string")
             response.setContentType(contentType.toString)
             response.getWriter.print(body)
+          case JsonResponse(_, body, header) =>
+            logger.debug("Response: json")
+            response.setContentType(MediaType.JSON_UTF_8.toString)
+            response.getWriter.print(body)
           case BinaryHttpResponse(_, contentType, body, _) =>
             logger.debug("Response: binary")
             response.setContentType(contentType.toString)
@@ -91,13 +96,13 @@ def runServer(): Unit =
 private val handlers = Seq(
   HealthHandler,
   ResourceHandler,
-  CarPostFormHandler,
-  CarPostHandler,
   CarGetHandler,
-  RefuelPostFormHandler,
-  RefuelPostHandler,
-  PhotoGetHandler,
-  PhotoPostHandler
+  CarListHandler,
+  CarPostHandler
+//  RefuelPostFormHandler,
+//  RefuelPostHandler,
+//  PhotoGetHandler,
+//  PhotoPostHandler
 )
 
 private def handlerUnexpected(e: Throwable) =

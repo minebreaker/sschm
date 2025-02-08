@@ -4,15 +4,17 @@
   "main": "index.js",
   "scripts": {
     "build": "npm run compile && npm run bundle && npm run copy && npm run copyToServer",
+    "build:dev": "npm run compile && npm run bundle:dev && npm run copy && npm run copyToServer",
     "build:clean": "npm run clean && npm run build",
     "compile": "tsc",
     "compile:watch": "tsc -w",
-    "bundle": "esbuild ./out/js/index.jsx --bundle --minify --sourcemap --outfile=./out/index.js",
-    "bundle:watch": "esbuild ./out/js/index.jsx --bundle --minify --sourcemap --outfile=./out/index.js --watch",
+    "bundle": "esbuild ./out/js/index.js --bundle --minify --sourcemap --outfile=./out/dist/index.js",
+    "bundle:dev": "esbuild ./out/js/index.js --bundle --sourcemap --outfile=./out/dist/index.js",
+    "bundle:watch": "esbuild ./out/js/index.js --bundle --sourcemap --outfile=./out/dist/index.js --watch",
     "copy": "npm run copy:html && npm run copy:style",
-    "copy:html": "cpx ./src/index.html ./out/",
-    "copy:style": "cpx ./src/index.css ./out/",
-    "copyToServer": "cpx ./out/* ../server/src/main/resources/ui",
+    "copy:html": "cpx ./src/index.html ./out/dist",
+    "copy:style": "cpx ./src/index.css ./out/dist",
+    "copyToServer": "cpx ./out/dist/* ../server/src/main/resources/ui",
     "clean": "rimraf ./out",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -21,12 +23,16 @@
   "description": "",
   "dependencies": {
     "jss": "^10.10.0",
+    "luxon": "^3.5.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-jss": "^10.10.0",
-    "router5": "^8.0.1"
+    "react-router5": "^8.0.1",
+    "router5": "^8.0.1",
+    "router5-plugin-browser": "^8.0.1"
   },
   "devDependencies": {
+    "@types/luxon": "^3.4.2",
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
     "cpx": "^1.5.0",

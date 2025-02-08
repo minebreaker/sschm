@@ -27,6 +27,10 @@ lazy val server = (project in file("server"))
       "org.postgresql" % "postgresql" % "42.7.5",
       "com.zaxxer" % "HikariCP" % "6.2.1",
       "org.flywaydb" % "flyway-core" % "9.22.3",
+      // JSON
+      "io.circe" %% "circe-core" % "0.14.10",
+      "io.circe" %% "circe-generic" % "0.14.10",
+      "io.circe" %% "circe-parser" % "0.14.10",
       // Scala things
       "org.typelevel" %% "cats-effect" % "3.5.7",
       "io.scalaland" %% "chimney" % "1.7.1"

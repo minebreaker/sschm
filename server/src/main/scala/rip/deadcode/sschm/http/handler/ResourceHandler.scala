@@ -13,7 +13,7 @@ import scala.util.matching.compat.Regex
 
 object ResourceHandler extends HttpHandler:
 
-  override def url: Regex = "^/ui(/.*)?|(/index\\.css)|(/index\\.js)$".r
+  override def url: Regex = "^(/)|(/car(/.*)?)|(/index\\.css)|(/index\\.js)$".r
 
   override def method: String = "GET"
 
@@ -21,12 +21,7 @@ object ResourceHandler extends HttpHandler:
 
     val (fileName, contentType): (String, MediaType) =
       request.getOriginalURI match
-        case "/ui" =>
-          (
-            "index.html",
-            MediaType.HTML_UTF_8
-          )
-        case s if s.startsWith("/ui") =>
+        case "/" =>
           (
             "index.html",
             MediaType.HTML_UTF_8
@@ -40,6 +35,11 @@ object ResourceHandler extends HttpHandler:
           (
             "index.js",
             MediaType.JAVASCRIPT_UTF_8
+          )
+        case s if s.startsWith("/car") =>
+          (
+            "index.html",
+            MediaType.HTML_UTF_8
           )
         case _ => throw Error("unreachable")
 
