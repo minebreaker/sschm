@@ -22,11 +22,12 @@ function Routing() {
     case DashboardRoute.name:
       return <Dashboard />
     case CarRoute.name:
-      return <Car id={route.route.params["id"]} />
+      return <Car id={route.route.params["id"]}
+                  refueled={route.route.params["refueled"]} />
     case AddCarRoute.name:
       return <AddCar />
     case RefuelRoute.name:
-      return <Refuel carId={route.route.params["id"]} />
+      return <Refuel carId={route.route.params["carId"]} />
     default:
       return <h1>404 Not Found</h1>
   }

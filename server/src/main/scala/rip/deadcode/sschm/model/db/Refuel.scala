@@ -8,7 +8,7 @@ case class Refuel(
     odo: Option[Int],
     price: Option[Int],
     note: String,
-    amount: Option[Int],
+    amount: Int,
     noPreviousRefuel: Boolean,
     eventDate: ZonedDateTime,
     createdAt: ZonedDateTime,

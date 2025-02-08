@@ -27,7 +27,7 @@ private case class Eff(
 
 private val dummyDate = ZonedDateTime.parse("2000-10-10T00:00:00+00:00")
 private val dummyRefuel =
-  Refuel("dummy", "dummy", Some(0), Some(0), "", Some(0), false, dummyDate, dummyDate, dummyDate)
+  Refuel("dummy", "dummy", Some(0), Some(0), "", 0, false, dummyDate, dummyDate, dummyDate)
 
 def calcFuelEfficiency(refuels: Seq[Refuel]): IO[CalcFuelEfficiencyResult] =
 
@@ -41,7 +41,7 @@ def calcFuelEfficiency(refuels: Seq[Refuel]): IO[CalcFuelEfficiencyResult] =
     .flatMap {
       case Seq(
             Refuel(_, _, Some(previousOdo), _, _, _, _, _, _, _),
-            Refuel(_, _, Some(odo), Some(price), _, Some(amount), false, _, _, _)
+            Refuel(_, _, Some(odo), Some(price), _, amount, false, _, _, _)
           ) =>
         Some(Eff(odo - previousOdo, amount, price))
       case _ => None

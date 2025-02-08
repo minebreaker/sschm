@@ -18,18 +18,17 @@ export function AddCar() {
   const [note, setNote] = useState("")
   const onChangeNote = useCallback((e: ChangeEvent<HTMLTextAreaElement>) => setNote(e.target.value), [])
 
-
   const carPost = useRequest<CarPostResponse>("/api/car")
   const handleSubmit = useCallback(() => {
     const request: CarPostRequest = {
       name,
       odo: odo ? Number.parseInt(odo) : undefined,
       price: price ? Number.parseInt(price) : undefined,
-      eventDate: eventDate,
+      eventDate: eventDate, // FIXME
       note: note ? note : undefined
     }
     carPost.submit(request)
-  }, [name, odo, price, eventDate, note])
+  }, [carPost, name, odo, price, eventDate, note])
 
   useEffect(() => {
     if (carPost.type === UseRequestState.Completed) {
@@ -49,6 +48,7 @@ export function AddCar() {
       )}
 
       <form>
+        {/* FIXME: use useId */}
         <label htmlFor="name">Car name</label>
         <input type="text" id="name" value={name} onChange={onChangeName} placeholder="Your car name" />
         <label htmlFor="odo">Odo (optional)</label>

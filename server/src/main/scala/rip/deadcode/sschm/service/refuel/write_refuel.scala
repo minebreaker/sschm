@@ -10,7 +10,7 @@ case class WriteRefuelParams(
     odo: Option[Int],
     price: Option[Int],
     note: String,
-    amount: Option[Int],
+    amount: Int,
     noPreviousRefuel: Boolean,
     eventDate: ZonedDateTime
 )
@@ -30,7 +30,7 @@ def writeRefuel(ctx: AppContext)(params: WriteRefuelParams): IO[Unit] =
           .bind("odo", params.odo.orNull)
           .bind("price", params.price.orNull)
           .bind("note", params.note)
-          .bind("amount", params.amount.orNull)
+          .bind("amount", params.amount)
           .bind("no_previous_refuel", params.noPreviousRefuel)
           .bind("event_date", params.eventDate)
           .execute()

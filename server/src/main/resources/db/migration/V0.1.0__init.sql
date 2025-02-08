@@ -56,7 +56,7 @@ create table refuel (
     odo                int,
     price              int,                               -- no currency
     note               text                     not null,
-    amount             int,                               -- dL (we want to store 1/10L)
+    amount             int                      not null, -- dL (we want to store 1/10L)
     no_previous_refuel bool                     not null, -- forgot to register previous refueling?
     event_date         timestamp with time zone not null,
     created_at         timestamp with time zone not null,
