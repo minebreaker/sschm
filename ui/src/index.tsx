@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
 const useStyles = createUseStyles({
   main: {
     display: "grid",
-    gridTemplateColumns: "auto 1fr auto",
+    gridTemplateRows: "auto 1fr auto",
     height: "100svh"
   }
 })

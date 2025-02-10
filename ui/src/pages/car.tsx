@@ -5,12 +5,16 @@ import { Link } from "react-router5"
 import { InfoPanel } from "../components/panel"
 import { CarGetResponse, CarGetResponseEventType } from "../types/api/car"
 import { createUseStyles } from "react-jss"
+import { RefuelRoute } from "./refuel"
 
 
 const useStyles = createUseStyles({
   th: {
     // minimize header size
     width: 0
+  },
+  events: {
+    paddingTop: "2em"
   }
 })
 
@@ -60,10 +64,10 @@ export function Car(props: { id: string, refueled?: boolean }) {
       </div>
 
       <p>
-        <Link routeName="refuel" routeParams={{ carId: props.id }}>Refuel</Link>
+        <Link routeName={RefuelRoute.name} routeParams={{ carId: props.id }}>Refuel</Link>
       </p>
 
-      <div>
+      <div className={classes.events}>
         <h2>Events</h2>
 
         {car.data.events.map(e => (

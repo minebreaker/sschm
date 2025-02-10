@@ -14,7 +14,6 @@ export function Refuel(props: { carId: string }) {
   return (
     <div>
       <h1>Refuel</h1>
-      <hr />
 
       <RefuelC carId={props.carId} onFinished={onFinished} />
     </div>

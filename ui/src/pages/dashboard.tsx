@@ -3,6 +3,7 @@ import { LoadingPage } from "../components/loading"
 import { Link } from "react-router5"
 import { Route } from "router5"
 import { CarListResponse } from "../types/api/car"
+import { CarRoute } from "./car"
 
 export function Dashboard() {
 
@@ -23,7 +24,6 @@ export function Dashboard() {
   return (
     <div>
       <h1>Dashboard</h1>
-      <hr />
 
       {cars.data.items.length === 0 && (
         <div>
@@ -32,10 +32,9 @@ export function Dashboard() {
         </div>
       )}
 
-
       {cars.data.items.length !== 0 && cars.data.items.map(car => (
         <div key={car.id}>
-          <Link routeName="car" routeParams={{ id: car.id }}>
+          <Link routeName={CarRoute.name} routeParams={{ id: car.id }}>
             <h2>{car.name}</h2>
           </Link>
         </div>
