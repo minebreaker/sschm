@@ -5,6 +5,8 @@ import { useCallback, useState } from "react"
 
 const useStyles = createUseStyles({
   header: {
+    position: "sticky",
+    top: 0,
     display: "flex",
     justifyContent: "space-between",
     height: "4rem",
