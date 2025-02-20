@@ -10,7 +10,7 @@ def readPhoto(ctx: AppContext)(id: String): IO[Photo] =
     ctx.jdbi.withHandle { handle =>
       handle
         // language=sql
-        .createQuery("select id, content_type, data from photo where id = :id")
+        .createQuery("select id, content_type, data from photo where id = :id ::uuid")
         .bind("id", id)
         .map(r =>
           Photo(
@@ -24,25 +24,15 @@ def readPhoto(ctx: AppContext)(id: String): IO[Photo] =
   }
 
 case class WritePhotoParams(
-    carId: String,
     binary: Array[Byte],
     mediaType: MediaType
 )
 
-def writePhoto(ctx: AppContext)(params: WritePhotoParams): IO[Unit] =
+def writePhoto(ctx: AppContext)(params: WritePhotoParams): IO[String] =
   for
     id <- IO.randomUUID
     _ <- IO.blocking {
       ctx.jdbi.inTransaction { handle =>
-
-        handle
-          // language=sql
-          .createUpdate("""update car set
-              |  photo_id = :photo_id,
-              |  updated_at = current_timestamp
-              |where
-              |  id = :car_id""".stripMargin)
-
         handle
           // language=sql
           .createUpdate("insert into photo(id, content_type, data) values (:id, :content_type, :data);")
@@ -52,4 +42,4 @@ def writePhoto(ctx: AppContext)(params: WritePhotoParams): IO[Unit] =
           .execute()
       }
     }
-  yield ()
+  yield id.toString

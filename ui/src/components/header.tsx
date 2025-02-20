@@ -75,7 +75,9 @@ export function Header() {
           </Link>
         </div>
         <div className={classes.menu}>
-          <p className={classes.menuIcon} onClick={handleToggleOpen}>☰</p>
+          <p className={classes.menuIcon}
+             onClick={handleToggleOpen}
+             role="button">☰</p>
         </div>
       </header>
       {open && (

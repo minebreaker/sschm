@@ -1,17 +1,18 @@
-package rip.deadcode.sschm.http.handler
+package rip.deadcode.sschm.http.handler.api
 
 import cats.effect.IO
 import com.google.common.net.{HttpHeaders, MediaType}
+import io.circe.Encoder
+import io.circe.syntax.*
 import org.apache.commons.fileupload2.core.DiskFileItemFactory
 import org.apache.commons.fileupload2.jakarta.JakartaServletDiskFileUpload
 import org.eclipse.jetty.server.Request
 import org.slf4j.LoggerFactory
 import rip.deadcode.sschm.AppContext
-import rip.deadcode.sschm.http.HttpResponse.EmptyHttpResponse
+import rip.deadcode.sschm.http.HttpResponse.{EmptyHttpResponse, JsonResponse}
 import rip.deadcode.sschm.http.{HttpHandler, HttpResponse}
 import rip.deadcode.sschm.service.photo.{WritePhotoParams, writePhoto}
 
-import java.nio.charset.StandardCharsets
 import scala.jdk.CollectionConverters.*
 import scala.util.matching.compat.Regex
 
@@ -19,7 +20,7 @@ object PhotoPostHandler extends HttpHandler:
 
   private val logger = LoggerFactory.getLogger(classOf[PhotoPostHandler.type])
 
-  override def url: Regex = "^/photo/upload$".r
+  override def url: Regex = "^/api/photo$".r
 
   override def method: String = "POST"
 
@@ -36,21 +37,25 @@ object PhotoPostHandler extends HttpHandler:
 
       _ = logger.debug("Uploaded items: {}", items)
 
-      carIdItem <- IO.fromOption(items.find(_.getFieldName == "car_id"))(???)
-      carId = carIdItem.getString(StandardCharsets.UTF_8)
-
       fileItem <- IO.fromOption(items.find(_.getFieldName == "file"))(???)
       file = fileItem.get()
       mediaType = MediaType.parse(fileItem.getContentType)
 
-      _ <- writePhoto(ctx)(
+      photoId <- writePhoto(ctx)(
         WritePhotoParams(
-          carId,
           file,
           mediaType
         )
       )
-    yield EmptyHttpResponse(
-      303,
-      Map(HttpHeaders.LOCATION -> "/health")
+      response = PhotoPostResponse(photoId)
+    yield JsonResponse(
+      200,
+      response.asJson.noSpaces
     )
+
+  private case class PhotoPostResponse(
+      id: String
+  )
+
+  private object PhotoPostResponse:
+    implicit val encoder: Encoder[PhotoPostResponse] = io.circe.generic.semiauto.deriveEncoder

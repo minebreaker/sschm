@@ -159,7 +159,26 @@ function reducer<T>(state: UseRequestState<T>, action: UseRequestAction<T>): Use
   }
 }
 
-export function useRequest<T>(url: string): UseRequestResult<T> {
+const defaultFetcher = (url: string, request: any): Promise<Response> => {
+  return fetch(url, {
+    body: JSON.stringify(request),
+    method: "POST",
+    headers: { "Content-Type": "application/json" }
+  })
+}
+
+export function useRequest<ResponseT>(
+  url: string,
+): UseRequestResult<ResponseT> {
+  return useRequestWith<ResponseT, any>(url, defaultFetcher)
+}
+
+export function useRequestWith<ResponseType, RequestType>(
+  url: string,
+  fetcher: (url: string, request: RequestType) => Promise<Response>,
+  onSuccess: (r: Response) => Promise<ResponseType> = r => r.json(),
+  onError: (r: Response) => Promise<ResponseType> = r => r.json()
+): UseRequestResult<ResponseType> {
 
   const isMounted = useRef(false)
 
@@ -168,9 +187,9 @@ export function useRequest<T>(url: string): UseRequestResult<T> {
     return () => {isMounted.current = false}
   }, []);
 
-  const [s, dispatch] = useReducer(reducer<T>, { type: "init" })
+  const [s, dispatch] = useReducer(reducer<ResponseType>, { type: "init" })
 
-  const submit = useCallback((request: any) => {
+  const submit = useCallback((request: RequestType) => {
     (async () => {
       if (!isMounted.current) {
         console.warn("Submit from an unmounted component")
@@ -179,19 +198,15 @@ export function useRequest<T>(url: string): UseRequestResult<T> {
       dispatch({ type: "loading" })
 
       try {
-        const result = await fetch(url, {
-          body: JSON.stringify(request),
-          method: "POST",
-          headers: { "Content-Type": "application/json" }
-        })
+        const result = await fetcher(url, request)
         if (result.ok) {
-          const body = await result.json()
+          const body = await onSuccess(result)
           if (isMounted.current) {
             dispatch({ type: "complete", data: body })
           }
         } else {
           if (isMounted.current) {
-            const body = await result.json()
+            const body = await onError(result)
             console.warn(body)
             dispatch({ type: "error", error: "Erroneous response." })
           }

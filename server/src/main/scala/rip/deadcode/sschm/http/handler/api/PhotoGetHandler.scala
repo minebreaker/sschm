@@ -1,4 +1,4 @@
-package rip.deadcode.sschm.http.handler
+package rip.deadcode.sschm.http.handler.api
 
 import cats.effect.IO
 import com.google.common.net.MediaType

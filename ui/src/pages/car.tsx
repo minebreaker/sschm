@@ -9,6 +9,15 @@ import { RefuelRoute } from "./refuel"
 
 
 const useStyles = createUseStyles({
+  image: {
+    maxWidth: "80vw",
+    maxHeight: "40vh",
+    objectFit: "cover"
+  },
+  imageContainer: {
+    display: "flex",
+    justifyContent: "center"
+  },
   th: {
     // minimize header size
     width: 0
@@ -47,7 +56,11 @@ export function Car(props: { id: string, refueled?: boolean }) {
       )}
 
       <div>
-        {car.data.photoId && <img src={`/api/photo/${car.data.photoId}`} alt="car photo" />}
+        <div className={classes.imageContainer}>
+          {car.data.photoId && <img src={`/api/photo/${car.data.photoId}`}
+                                    className={classes.image}
+                                    alt="car photo" />}
+        </div>
         <table>
           <tbody>
           <tr>

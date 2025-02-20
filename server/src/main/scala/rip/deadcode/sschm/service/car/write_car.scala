@@ -10,6 +10,7 @@ case class WriteCarParams(
     odo: Option[Int],
     price: Option[Int],
     note: String,
+    photoId: Option[String],
     eventDate: ZonedDateTime
 )
 
@@ -26,11 +27,12 @@ def writeCar(ctx: AppContext)(params: WriteCarParams): IO[WriteCarResult] =
       ctx.jdbi.inTransaction { handle =>
         handle
           // language=sql
-          .createUpdate("""insert into car(id, name, note, created_at, updated_at)
-                          |values (:id, :name, :note, current_timestamp, current_timestamp)
+          .createUpdate("""insert into car(id, name, photo_id, note, created_at, updated_at)
+                          |values (:id, :name, :photo_id ::uuid, :note, current_timestamp, current_timestamp)
                           |""".stripMargin)
           .bind("id", carId)
           .bind("name", params.name)
+          .bind("photo_id", params.photoId.orNull)
           .bind("note", params.note)
           .execute()
         handle

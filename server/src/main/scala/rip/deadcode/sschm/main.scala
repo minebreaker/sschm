@@ -10,7 +10,14 @@ import org.jdbi.v3.core.Jdbi
 import org.slf4j.LoggerFactory
 import rip.deadcode.sschm.db.{createDataSource, setupFlyway}
 import rip.deadcode.sschm.http.HttpResponse.{BinaryHttpResponse, EmptyHttpResponse, JsonResponse, StringHttpResponse}
-import rip.deadcode.sschm.http.handler.api.{CarGetHandler, CarListHandler, CarPostHandler, RefuelPostHandler}
+import rip.deadcode.sschm.http.handler.api.{
+  CarGetHandler,
+  CarListHandler,
+  CarPostHandler,
+  PhotoGetHandler,
+  PhotoPostHandler,
+  RefuelPostHandler
+}
 import rip.deadcode.sschm.http.handler.{HealthHandler, ResourceHandler}
 import rip.deadcode.sschm.http.{HttpResponse, NotFoundHandler}
 import rip.deadcode.sschm.lib.jdbi.{ConstructorRowMapperFactoryDelegator, OptionColumnMapperFactory}
@@ -100,9 +107,9 @@ private val handlers = Seq(
   CarGetHandler,
   CarListHandler,
   CarPostHandler,
-  RefuelPostHandler
-//  PhotoGetHandler,
-//  PhotoPostHandler
+  RefuelPostHandler,
+  PhotoGetHandler,
+  PhotoPostHandler
 )
 
 private def handlerUnexpected(e: Throwable) =

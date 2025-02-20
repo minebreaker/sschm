@@ -36,6 +36,7 @@ object CarPostHandler extends HttpHandler:
         .parse(requestBody.eventDate, DateTimeFormatter.ISO_DATE_TIME)
         .atZone(ZoneId.systemDefault()) // FIXME
       note = requestBody.note.getOrElse("")
+      photoId = requestBody.photoId
 
       result <- writeCar(ctx)(
         WriteCarParams(
@@ -43,13 +44,14 @@ object CarPostHandler extends HttpHandler:
           odo,
           price,
           note,
+          photoId,
           eventDate
         )
       )
       response = CarPostResponse(
         result.carId,
         name,
-        None, // FIXME
+        photoId,
         note
       )
     yield JsonResponse(

@@ -2,6 +2,8 @@ import { ChangeEvent, useCallback, useEffect, useState } from "react"
 import { useRequest, UseRequestState } from "../lib/net"
 import { useRouter } from "react-router5"
 import { Route } from "router5"
+import { CarPostRequest, CarPostResponse } from "../types/api/car"
+import { UploadPhoto } from "../components/uploadPhoto"
 
 export function AddCar() {
 
@@ -18,14 +20,18 @@ export function AddCar() {
   const [note, setNote] = useState("")
   const onChangeNote = useCallback((e: ChangeEvent<HTMLTextAreaElement>) => setNote(e.target.value), [])
 
+  const [photoId, setPhotoId] = useState("")
+  const onChangePhotoId = useCallback((photoId: string) => setPhotoId(photoId), [])
+
   const carPost = useRequest<CarPostResponse>("/api/car")
-  const handleSubmit = useCallback(() => {
+  const handleUpload = useCallback(() => {
     const request: CarPostRequest = {
       name,
       odo: odo ? Number.parseInt(odo) : undefined,
       price: price ? Number.parseInt(price) : undefined,
       eventDate: eventDate, // FIXME
-      note: note ? note : undefined
+      note: note ? note : undefined,
+      photoId: photoId ? photoId : undefined
     }
     carPost.submit(request)
   }, [carPost, name, odo, price, eventDate, note])
@@ -60,8 +66,10 @@ export function AddCar() {
         <label htmlFor="note">Note (optional)</label>
         <textarea id="note" value={note} onChange={onChangeNote}></textarea>
 
-        <button type="submit"
-                onClick={handleSubmit}
+        <label>Photo</label>
+        <UploadPhoto onUpload={onChangePhotoId} />
+
+        <button onClick={handleUpload}
                 disabled={carPost.type === UseRequestState.Loading}>
           Submit
         </button>

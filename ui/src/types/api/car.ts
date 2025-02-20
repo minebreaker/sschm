@@ -42,6 +42,7 @@ export type CarPostRequest = {
   price?: number
   eventDate: string
   note?: string,
+  photoId?: string
 }
 
 export type CarPostResponse = {
