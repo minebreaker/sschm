@@ -11,7 +11,6 @@ import rip.deadcode.sschm.http.{HttpHandler, HttpResponse}
 import rip.deadcode.sschm.service.refuel.{WriteRefuelParams, writeRefuel}
 
 import java.nio.charset.StandardCharsets
-import java.time.format.DateTimeFormatter
 import java.time.{LocalDateTime, ZoneId}
 import scala.util.matching.Regex
 
@@ -33,7 +32,7 @@ object RefuelPostHandler extends HttpHandler:
       requestBody <- IO.fromEither(decode[RefuelPostRequest](new String(is, StandardCharsets.UTF_8)))
 
       note = requestBody.note.getOrElse("")
-      amount = (BigDecimal(requestBody.amount) * 10).setScale(0).toIntExact // FIXME
+      amount = requestBody.amount
       eventDate = requestBody.eventDate
         .atZone(ZoneId.systemDefault()) // FIXME
 
