@@ -87,12 +87,10 @@ export function Car(props: { id: string, refueled?: boolean }) {
       <div className={classes.events}>
         <h2>Events</h2>
         {car.data.events.map((e, i) => (
-          <>
-            {i !== 0 && <hr key={"hr" + i} className={classes.eventHr} />}
-            <div key={e.id}>
-              <Event event={e} />
-            </div>
-          </>
+          <div key={e.id}>
+            {i !== 0 && <hr className={classes.eventHr} />}
+            <Event event={e} />
+          </div>
         ))}
       </div>
     </div>
