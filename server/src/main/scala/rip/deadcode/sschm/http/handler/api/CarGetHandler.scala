@@ -70,7 +70,7 @@ object CarGetHandler extends HttpHandler:
               e.carId,
               e.odo.fold("- ")(_.toString) + "km",
               e.price.fold("-")("¥%,d".format(_)),
-              "%,.1fL".format(e.amount.toFloat / 10),
+              "%,.2fL".format(e.amount.toFloat / 100),
               e.noPreviousRefuel,
               e.note,
               e.eventDate.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)

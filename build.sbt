@@ -42,8 +42,19 @@ lazy val server = (project in file("server"))
     Test / fork := true,
     Test / testForkedParallel := true,
 
+    // Buildinfo
+    buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion, sbtVersion),
+    buildInfoPackage := "rip.deadcode.sschm.build_info",
+
     // Docker
     dockerBaseImage := "amazoncorretto:23-alpine3.21",
     Docker / packageName := "sschm",
-    Docker / dockerExposedPorts := Seq(8080)
+    Docker / dockerExposedPorts := Seq(8080),
+
+    // Fat jar
+    assemblyMergeStrategy := {
+      case "module-info.class"                                        => MergeStrategy.discard
+      case PathList("META-INF", "versions", "9", "module-info.class") => MergeStrategy.discard
+      case v => (assembly / assemblyMergeStrategy).value.apply(v)
+    }
   )

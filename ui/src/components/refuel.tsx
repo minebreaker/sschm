@@ -1,5 +1,6 @@
 import { ChangeEvent, useCallback, useEffect, useId, useState } from "react"
 import { useRequest, UseRequestState } from "../lib/net"
+import { DateTime } from "luxon"
 
 export function Refuel(props: {
   carId: string,
@@ -33,7 +34,7 @@ export function Refuel(props: {
       odo: odo ? Number.parseInt(odo) : undefined,
       price: price ? Number.parseInt(price) : undefined,
       note: note ? note : undefined,
-      amount: Number.parseInt(amount),
+      amount: Math.floor(Number.parseFloat(amount) * 100),
       eventDate, // FIXME
       noPreviousRefuel: noPreviousRefuel
     }
@@ -46,6 +47,11 @@ export function Refuel(props: {
       props.onFinished()
     }
   }, [refuelPost.type, props.onFinished]);
+
+  useEffect(() => {
+    const now = DateTime.now()
+    setEventDate(now.toISO())
+  }, [])
 
   return (
     <>
