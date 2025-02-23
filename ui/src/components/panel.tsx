@@ -3,7 +3,9 @@ import { createUseStyles } from "react-jss"
 
 const useStyles = createUseStyles({
   panel: {
-    backgroundColor: "#f4f5f6"
+    backgroundColor: "#f4f5f6",
+    margin: "1em",
+    padding: "1em"
   }
 })
 

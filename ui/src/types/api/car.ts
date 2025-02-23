@@ -16,14 +16,29 @@ export const CarGetResponseEventType = {
 
 export type CarGetResponseEventType = typeof CarGetResponseEventType[keyof typeof CarGetResponseEventType]
 
-export type CarGetResponseEvent = {
+export type CarGetResponseEvent = CarGetResponseEventEvent
+  & CarGetResponseEventMaintenance
+  & CarGetResponseEventRefuel
+
+type CarGetResponseEventCommon = {
   id: string
-  type: CarGetResponseEventType,
+  type: typeof CarGetResponseEventType.Event,
   carId: string,
   odo: string,
   price: string,
   note: string,
   eventDate: string
+}
+
+export type CarGetResponseEventEvent = CarGetResponseEventCommon & {
+  type: typeof CarGetResponseEventType.Event,
+}
+
+export type CarGetResponseEventMaintenance = CarGetResponseEventCommon
+
+export type CarGetResponseEventRefuel = CarGetResponseEventCommon & {
+  amount: string,
+  noPreviousRefuel: boolean
 }
 
 export type CarListResponse = {

@@ -1,7 +1,5 @@
 package rip.deadcode.sschm.model.db
 
-import org.jdbi.v3.core.result.RowView
-
 import java.time.ZonedDateTime
 
 case class MaintenanceEvent(

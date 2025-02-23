@@ -42,21 +42,40 @@ object CarGetHandler extends HttpHandler:
         } else {
           "- km/L"
         },
-        events.map(e =>
-          CarGetResponseEvent(
-            e.id,
-            e match {
-              case _: EventImpl        => "event"
-              case _: MaintenanceEvent => "maintenance"
-              case _: Refuel           => "refuel"
-            },
-            e.carId,
-            e.odo.fold("-")(_.toString),
-            e.price.fold("-")(_.toString),
-            e.note,
-            e.eventDate.format(DateTimeFormatter.ISO_DATE_TIME)
-          )
-        )
+        events.map {
+          case e: EventImpl =>
+            CarGetResponseEventEvent(
+              e.id,
+              "event",
+              e.carId,
+              e.odo.fold("- ")(_.toString) + "km",
+              e.price.fold("-")("¥" + _.toString.formatted("%,d")),
+              e.note,
+              e.eventDate.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+            )
+          case e: MaintenanceEvent =>
+            CarGetResponseEventMaintenance(
+              e.id,
+              "maintenance",
+              e.carId,
+              e.odo.fold("- ")(_.toString) + "km",
+              e.price.fold("-")("¥" + _.toString.formatted("%,d")),
+              e.note,
+              e.eventDate.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+            )
+          case e: Refuel =>
+            CarGetResponseEventRefuel(
+              e.id,
+              "refuel",
+              e.carId,
+              e.odo.fold("- ")(_.toString) + "km",
+              e.price.fold("-")("¥%,d".format(_)),
+              "%,.1fL".format(e.amount.toFloat / 10),
+              e.noPreviousRefuel,
+              e.note,
+              e.eventDate.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+            )
+        }
       )
     yield JsonResponse(200, response.asJson.noSpaces)
 
@@ -73,7 +92,16 @@ object CarGetHandler extends HttpHandler:
   private object CarGetResponse:
     implicit val encoder: Encoder[CarGetResponse] = io.circe.generic.semiauto.deriveEncoder
 
-  private case class CarGetResponseEvent(
+  private sealed trait CarGetResponseEvent
+
+  private object CarGetResponseEvent:
+    implicit val encoder: Encoder[CarGetResponseEvent] = Encoder.instance {
+      case event: CarGetResponseEventEvent             => event.asJson
+      case maintenance: CarGetResponseEventMaintenance => maintenance.asJson
+      case refuel: CarGetResponseEventRefuel           => refuel.asJson
+    }
+
+  private case class CarGetResponseEventEvent(
       id: String,
       `type`: String,
       carId: String,
@@ -81,7 +109,35 @@ object CarGetHandler extends HttpHandler:
       price: String,
       note: String,
       eventDate: String
-  )
+  ) extends CarGetResponseEvent
 
-  private object CarGetResponseEvent:
-    implicit val encoder: Encoder[CarGetResponseEvent] = io.circe.generic.semiauto.deriveEncoder
+  private object CarGetResponseEventEvent:
+    implicit val encoder: Encoder[CarGetResponseEventEvent] = io.circe.generic.semiauto.deriveEncoder
+
+  private case class CarGetResponseEventMaintenance(
+      id: String,
+      `type`: String,
+      carId: String,
+      odo: String,
+      price: String,
+      note: String,
+      eventDate: String
+  ) extends CarGetResponseEvent
+
+  private object CarGetResponseEventMaintenance:
+    implicit val encoder: Encoder[CarGetResponseEventMaintenance] = io.circe.generic.semiauto.deriveEncoder
+
+  private case class CarGetResponseEventRefuel(
+      id: String,
+      `type`: String,
+      carId: String,
+      odo: String,
+      price: String,
+      amount: String,
+      noPreviousRefuel: Boolean,
+      note: String,
+      eventDate: String
+  ) extends CarGetResponseEvent
+
+  private object CarGetResponseEventRefuel:
+    implicit val encoder: Encoder[CarGetResponseEventRefuel] = io.circe.generic.semiauto.deriveEncoder

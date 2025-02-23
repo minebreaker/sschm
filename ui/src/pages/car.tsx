@@ -3,9 +3,10 @@ import { LoadingPage } from "../components/loading"
 import { Route } from "router5"
 import { Link } from "react-router5"
 import { InfoPanel } from "../components/panel"
-import { CarGetResponse, CarGetResponseEventType } from "../types/api/car"
+import { CarGetResponse, CarGetResponseEvent, CarGetResponseEventType } from "../types/api/car"
 import { createUseStyles } from "react-jss"
 import { RefuelRoute } from "./refuel"
+import { DateTime } from "luxon"
 
 
 const useStyles = createUseStyles({
@@ -24,6 +25,9 @@ const useStyles = createUseStyles({
   },
   events: {
     paddingTop: "2em"
+  },
+  eventHr: {
+    borderTopColor: "#e1e1e1"
   }
 })
 
@@ -82,32 +86,108 @@ export function Car(props: { id: string, refueled?: boolean }) {
 
       <div className={classes.events}>
         <h2>Events</h2>
-
-        {car.data.events.map(e => (
-          <div key={e.id}>
-            {e.type === CarGetResponseEventType.Event && (
-              <>
-                <h4>Event</h4>
-                <p>{e.eventDate}</p>
-              </>
-            )}
-            {e.type === CarGetResponseEventType.Maintenance && (
-              <>
-                <h4>Maintenance</h4>
-                <p>{e.eventDate}</p>
-              </>
-            )}
-            {e.type === CarGetResponseEventType.Refuel && (
-              <>
-                <h4>Refuel</h4>
-                <p>{e.eventDate}</p>
-              </>
-            )}
-          </div>
+        {car.data.events.map((e, i) => (
+          <>
+            {i !== 0 && <hr key={"hr" + i} className={classes.eventHr} />}
+            <div key={e.id}>
+              <Event event={e} />
+            </div>
+          </>
         ))}
       </div>
     </div>
   )
+}
+
+const useEventStyles = createUseStyles({
+  head: {
+    display: "flex",
+    justifyContent: "space-between"
+  },
+  odoAndDateContainer: {
+    display: "flex",
+    flexDirection: "column"
+  },
+  odoAndDate: {
+    display: "flex",
+    justifyContent: "end"
+  }
+})
+
+function Event({ event }: { event: CarGetResponseEvent }) {
+  const classes = useEventStyles()
+
+  return (
+    <>
+      {event.type === CarGetResponseEventType.Event && (
+        <>
+          <div className={classes.head}>
+            <h4>Event</h4>
+            <div className={classes.odoAndDateContainer}>
+              <Date className={classes.odoAndDate} date={event.eventDate} />
+              <p className={classes.odoAndDate}>{event.odo}</p>
+            </div>
+          </div>
+          {event.note && (
+            <p>
+              {event.note}
+            </p>
+          )}
+        </>
+      )}
+      {event.type === CarGetResponseEventType.Maintenance && (
+        <>
+          <div className={classes.head}>
+            <h4>Maintenance</h4>
+            <div className={classes.odoAndDateContainer}>
+              <Date className={classes.odoAndDate} date={event.eventDate} />
+              <p className={classes.odoAndDate}>{event.odo}</p>
+            </div>
+          </div>
+          {event.note && (
+            <p>
+              {event.note}
+            </p>
+          )}
+        </>
+      )}
+      {event.type === CarGetResponseEventType.Refuel && (
+        <>
+          <div className={classes.head}>
+            <h4>Refuel</h4>
+            <div className={classes.odoAndDateContainer}>
+              <Date className={classes.odoAndDate} date={event.eventDate} />
+              <p className={classes.odoAndDate}>{event.odo}</p>
+            </div>
+          </div>
+          <p>
+            {event.amount} - {event.price}
+          </p>
+          {event.note && (
+            <p>
+              {event.note}
+            </p>
+          )}
+        </>
+      )}
+    </>
+  )
+}
+
+function Date(props: { className: string, date: string }) {
+  const maybeDate = DateTime.fromISO(props.date)
+  if (maybeDate.isValid) {
+    return (
+      <p className={props.className}>
+        {maybeDate.toFormat("yyyy-LL-dd HH:mm")}
+      </p>
+    )
+  } else {
+    console.error(`Invalid date format: ${props.date}`)
+    return (
+      <p className={props.className}>{props.date}</p>
+    )
+  }
 }
 
 export const CarRoute = {

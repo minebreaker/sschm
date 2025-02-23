@@ -28,6 +28,7 @@ export function Refuel(props: {
 
   const refuelPost = useRequest<RefuelPostResponse>(`/api/car/${props.carId}/refuel`)
   const handleSubmit = useCallback(() => {
+    console.log(odo)
     const request: RefuelPostRequest = {
       odo: odo ? Number.parseInt(odo) : undefined,
       price: price ? Number.parseInt(price) : undefined,
@@ -36,6 +37,7 @@ export function Refuel(props: {
       eventDate, // FIXME
       noPreviousRefuel: noPreviousRefuel
     }
+    console.log(request)
     refuelPost.submit(request)
   }, [refuelPost, odo, price, note, eventDate, noPreviousRefuel])
 
